@@ -1,14 +1,42 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, CheckCircle2, ShieldCheck, X, Phone, Award, Quote, Star } from "lucide-react";
+import { useState } from "react";
+import { ArrowRight, CheckCircle2, ShieldCheck, X, Phone, Quote, Star, MessageCircle } from "lucide-react";
 import { SEO, localBusinessJsonLd } from "@/components/SEO";
 import { Reveal } from "@/components/Reveal";
 import { useQuote } from "@/context/QuoteContext";
 import { SERVICES, STATS, INDUSTRIES, TESTIMONIALS, CLIENT_LOGOS, CONCERNS, SOLUTIONS, AWARDS, SITE } from "@/data/site";
-import heroImg from "@/assets/hero-security.jpg";
+import heroGuard from "@/assets/hero-guard.jpg";
+import detailUniform from "@/assets/detail-uniform.jpg";
+import bouncerEvent from "@/assets/bouncer-event.jpg";
 import aboutImg from "@/assets/about.jpg";
+import bouncerSvc from "@/assets/service-bouncer.jpg";
+import corporateSvc from "@/assets/service-corporate.jpg";
+import residentialSvc from "@/assets/service-residential.jpg";
+import vvipSvc from "@/assets/service-vvip.jpg";
+import industrialSvc from "@/assets/service-industrial.jpg";
+import trainingImg from "@/assets/training.jpg";
+
+const SERVICE_IMAGES: Record<string, string> = {
+  "manned-guarding": corporateSvc,
+  "bouncer-bodyguard": bouncerSvc,
+  "event-security": bouncerEvent,
+  "corporate-security": corporateSvc,
+  "industrial-security": industrialSvc,
+  "residential-society-security": residentialSvc,
+  "personal-security": vvipSvc,
+  "mall-retail-security": trainingImg,
+  "warehouse-security": industrialSvc,
+};
 
 const Home = () => {
   const { openModal } = useQuote();
+  const [quickName, setQuickName] = useState("");
+  const [quickPhone, setQuickPhone] = useState("");
+
+  const onQuickSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    openModal();
+  };
 
   return (
     <>
@@ -19,62 +47,102 @@ const Home = () => {
         jsonLd={localBusinessJsonLd()}
       />
 
-      {/* HERO */}
-      <section className="relative min-h-[92vh] overflow-hidden">
-        <img src={heroImg} alt="Star Security guards on duty in Pune" className="absolute inset-0 h-full w-full object-cover" width={1920} height={1080} />
-        <div className="absolute inset-0 hero-overlay" />
-        <div className="container-wide relative z-10 flex min-h-[92vh] flex-col justify-center py-24 text-primary-foreground">
-          <Reveal>
-            <span className="eyebrow !text-gold">Pune · Since 2007</span>
-          </Reveal>
-          <Reveal delay={120}>
-            <h1 className="heading-hero mt-5 max-w-3xl text-primary-foreground">
-              It's time to upgrade your security —<br />
-              <span className="text-gold">SWITCH TO STAR.</span>
-            </h1>
-          </Reveal>
-          <Reveal delay={240}>
-            <p className="mt-6 max-w-xl text-base text-primary-foreground/85 sm:text-lg">
-              Police-permitted, ISO-certified protection for offices, factories, societies, events and individuals across Pune & Maharashtra. Trained personnel. Real supervision. 24×7 response.
-            </p>
-          </Reveal>
-          <Reveal delay={360}>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <button onClick={() => openModal()} className="btn-gold">
-                Get a Free Quote <ArrowRight className="h-4 w-4" />
-              </button>
-              <a href={`tel:${SITE.phone}`} className="btn-outline-light">
-                <Phone className="h-4 w-4" /> Call {SITE.phoneDisplay}
-              </a>
-            </div>
-          </Reveal>
-          <Reveal delay={480}>
-            <div className="mt-12 flex flex-wrap gap-x-6 gap-y-3">
-              {SITE.badges.map(b => (
-                <div key={b} className="flex items-center gap-2 text-sm text-primary-foreground/80">
-                  <CheckCircle2 className="h-4 w-4 text-gold" />{b}
+      {/* HERO — split layout, photo-led, with inline quote form */}
+      <section className="relative overflow-hidden bg-primary text-primary-foreground">
+        <img src={heroGuard} alt="Star Security guard on duty in Pune" className="absolute inset-0 h-full w-full object-cover opacity-40" width={1920} height={1080} />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/85 to-primary/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-primary/95 via-transparent to-transparent" />
+        <div className="container-wide relative z-10 grid items-center gap-10 py-20 lg:grid-cols-12 lg:py-28">
+          <div className="lg:col-span-7">
+            <Reveal>
+              <span className="eyebrow !text-gold">Pune · Since 2007 · Police Permitted</span>
+            </Reveal>
+            <Reveal delay={120}>
+              <h1 className="heading-hero mt-5 max-w-3xl uppercase tracking-tight text-primary-foreground">
+                It's time to upgrade<br />your security —<br />
+                <span className="text-gold">SWITCH TO STAR.</span>
+              </h1>
+            </Reveal>
+            <Reveal delay={240}>
+              <p className="mt-6 max-w-xl text-base text-primary-foreground/85 sm:text-lg">
+                ISO-certified protection for offices, factories, societies, events and individuals across Pune & Maharashtra. Trained personnel. Real supervision. 24×7 response.
+              </p>
+            </Reveal>
+            <Reveal delay={360}>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <button onClick={() => openModal()} className="btn-gold">
+                  Get Started Today <ArrowRight className="h-4 w-4" />
+                </button>
+                <a href={`https://wa.me/${SITE.whatsapp}`} target="_blank" rel="noopener" className="inline-flex items-center justify-center gap-2 rounded-md bg-whatsapp px-6 py-3 text-sm font-bold uppercase tracking-wider text-whatsapp-foreground transition hover:brightness-110">
+                  <MessageCircle className="h-4 w-4" /> WhatsApp
+                </a>
+                <a href={`tel:${SITE.phone}`} className="btn-outline-light">
+                  <Phone className="h-4 w-4" /> {SITE.phoneDisplay}
+                </a>
+              </div>
+            </Reveal>
+            <Reveal delay={480}>
+              <div className="mt-10 flex flex-wrap gap-x-6 gap-y-3">
+                {SITE.badges.map(b => (
+                  <div key={b} className="flex items-center gap-2 text-sm text-primary-foreground/85">
+                    <CheckCircle2 className="h-4 w-4 text-gold" />{b}
+                  </div>
+                ))}
+              </div>
+            </Reveal>
+          </div>
+
+          {/* Quick quote form — globe-style */}
+          <Reveal delay={300}>
+            <div className="relative lg:col-span-5">
+              <div className="absolute -left-3 -top-3 hidden h-full w-full rounded-lg border-2 border-gold/50 lg:block" />
+              <form onSubmit={onQuickSubmit} className="relative rounded-lg bg-card p-6 shadow-elegant sm:p-8" style={{ boxShadow: "var(--shadow-elegant)" }}>
+                <div className="flex items-center gap-2 border-l-4 border-gold pl-3">
+                  <h2 className="font-display text-xl font-bold uppercase tracking-wider text-primary">Get Started Today</h2>
                 </div>
-              ))}
+                <p className="mt-2 text-xs text-muted-foreground">Quote within the hour. Free site survey.</p>
+                <div className="mt-5 space-y-3">
+                  <div>
+                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Name</label>
+                    <input value={quickName} onChange={e => setQuickName(e.target.value)} required className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold" />
+                  </div>
+                  <div>
+                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Contact Number</label>
+                    <input value={quickPhone} onChange={e => setQuickPhone(e.target.value)} required type="tel" className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold" />
+                  </div>
+                  <div>
+                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Service Required</label>
+                    <select className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold">
+                      <option>Choose a service…</option>
+                      {SERVICES.slice(0, 10).map(s => <option key={s.slug}>{s.title}</option>)}
+                    </select>
+                  </div>
+                  <button type="submit" className="btn-gold w-full">Submit Enquiry <ArrowRight className="h-4 w-4" /></button>
+                  <p className="text-center text-[11px] text-muted-foreground">By submitting you agree to be contacted by our team.</p>
+                </div>
+              </form>
             </div>
           </Reveal>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 z-10 hidden border-t border-white/10 bg-primary/60 backdrop-blur md:block">
-          <div className="container-wide grid grid-cols-4 divide-x divide-white/10">
+
+        {/* Stat band */}
+        <div className="relative z-10 border-t border-white/10 bg-primary/70 backdrop-blur">
+          <div className="container-wide grid grid-cols-2 divide-x divide-white/10 sm:grid-cols-4">
             {STATS.map(s => (
               <div key={s.label} className="px-4 py-5 text-center text-primary-foreground">
-                <div className="font-mono-num text-3xl font-bold text-gold">{s.value}</div>
-                <div className="mt-1 text-xs uppercase tracking-widest opacity-80">{s.label}</div>
+                <div className="font-mono-num text-3xl font-bold text-gold sm:text-4xl">{s.value}</div>
+                <div className="mt-1 text-[10px] uppercase tracking-widest opacity-80 sm:text-xs">{s.label}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* TRUST STRIP / CLIENT LOGOS */}
-      <section className="border-y bg-muted/30 py-8">
+      {/* TRUST STRIP */}
+      <section className="border-b bg-background py-8">
         <div className="container-wide">
           <p className="text-center text-xs uppercase tracking-[0.25em] text-muted-foreground">Trusted by 500+ organisations across Pune</p>
-          <div className="mt-5 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 opacity-70">
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 opacity-60">
             {CLIENT_LOGOS.slice(0, 8).map(l => (
               <span key={l} className="font-display text-base font-semibold text-primary/70">{l}</span>
             ))}
@@ -84,59 +152,76 @@ const Home = () => {
 
       {/* ABOUT PREVIEW */}
       <section className="section">
-        <div className="container-wide grid items-center gap-12 lg:grid-cols-2">
+        <div className="container-wide grid items-center gap-12 lg:grid-cols-12">
           <Reveal>
-            <div className="relative">
+            <div className="relative lg:col-span-6">
               <img src={aboutImg} alt="Star Security leadership" className="rounded-lg shadow-elegant" width={1280} height={900} loading="lazy" style={{ boxShadow: "var(--shadow-elegant)" }} />
-              <div className="absolute -bottom-6 -right-6 hidden rounded-lg border border-gold/40 bg-card p-5 shadow-card sm:block" style={{ boxShadow: "var(--shadow-card)" }}>
-                <div className="font-mono-num text-4xl font-bold text-primary">18+</div>
-                <div className="text-xs uppercase tracking-widest text-muted-foreground">Years protecting Pune</div>
+              <img src={detailUniform} alt="Security uniform detail" className="absolute -bottom-10 -right-6 hidden w-48 rounded-lg border-4 border-background shadow-elegant md:block" loading="lazy" style={{ boxShadow: "var(--shadow-elegant)" }} />
+              <div className="absolute -left-4 -top-4 rounded-lg border border-gold/50 bg-gold px-5 py-3 text-primary shadow-gold" style={{ boxShadow: "var(--shadow-gold)" }}>
+                <div className="font-mono-num text-3xl font-bold leading-none">18+</div>
+                <div className="text-[10px] uppercase tracking-widest">Years</div>
               </div>
             </div>
           </Reveal>
           <Reveal delay={120}>
-            <span className="eyebrow">Who we are</span>
-            <h2 className="heading-section mt-4 text-primary">A Pune family business, built on trust.</h2>
-            <p className="mt-5 text-muted-foreground leading-relaxed">
-              Founded in 2007 by Late Anil Kamble and now led by MD Sonali Kamble, Star Security & Bouncer has grown into one of Pune's most respected private-security agencies. We protect over 500 sites — from MIDC factories and IT campuses to weddings, hospitals and gated societies — with PSARA-trained, police-verified personnel and real on-ground supervision.
-            </p>
-            <ul className="mt-6 grid gap-2.5 sm:grid-cols-2">
-              {["PSARA Licensed Agency","ISO 9001:2015 Certified","Pune Police Permitted","2000+ trained personnel"].map(p => (
-                <li key={p} className="flex items-center gap-2 text-sm"><CheckCircle2 className="h-4 w-4 text-gold" />{p}</li>
-              ))}
-            </ul>
-            <Link to="/about" className="mt-8 inline-flex items-center gap-2 font-semibold text-primary hover:text-gold transition">
-              Read our story <ArrowRight className="h-4 w-4" />
-            </Link>
+            <div className="lg:col-span-6">
+              <span className="eyebrow">Welcome to Star Security</span>
+              <h2 className="heading-section mt-4 text-primary">A Pune family business, built on trust.</h2>
+              <p className="mt-5 text-muted-foreground leading-relaxed">
+                Founded in 2007 by Late Anil Kamble and now led by MD Sonali Kamble, Star Security & Bouncer has grown into one of Pune's most respected private-security agencies. We protect over 500 sites — from MIDC factories and IT campuses to weddings, hospitals and gated societies — with PSARA-trained, police-verified personnel and real on-ground supervision.
+              </p>
+              <ul className="mt-6 grid gap-2.5 sm:grid-cols-2">
+                {["PSARA Licensed Agency","ISO 9001:2015 Certified","Pune Police Permitted","2000+ trained personnel"].map(p => (
+                  <li key={p} className="flex items-center gap-2 text-sm"><CheckCircle2 className="h-4 w-4 text-gold" />{p}</li>
+                ))}
+              </ul>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Link to="/about" className="btn-gold">Read our story <ArrowRight className="h-4 w-4" /></Link>
+                <button onClick={() => openModal()} className="inline-flex items-center justify-center gap-2 rounded-md border-2 border-primary px-6 py-3 text-sm font-semibold uppercase tracking-wider text-primary transition hover:bg-primary hover:text-primary-foreground">Get a Quote</button>
+              </div>
+            </div>
           </Reveal>
         </div>
       </section>
 
-      {/* SERVICES GRID */}
-      <section className="section bg-muted/30">
+      {/* SERVICES — image-led cards */}
+      <section className="section bg-muted/40">
         <div className="container-wide">
           <div className="mx-auto max-w-2xl text-center">
-            <span className="eyebrow">What we do</span>
+            <span className="eyebrow">Security Services</span>
             <h2 className="heading-section mt-4 text-primary">19 specialised services. One trusted partner.</h2>
             <div className="gold-divider mt-6" />
           </div>
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {SERVICES.slice(0, 9).map((s, i) => (
-              <Reveal key={s.slug} delay={i * 60}>
-                <Link to={`/services/${s.slug}`} className="card-elevate group block h-full p-6">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-md bg-primary text-primary-foreground transition-colors group-hover:bg-gold group-hover:text-primary">
-                    <s.icon className="h-5 w-5" />
+              <Reveal key={s.slug} delay={i * 50}>
+                <Link to={`/services/${s.slug}`} className="card-elevate group block h-full overflow-hidden">
+                  <div className="relative aspect-[4/3] overflow-hidden bg-primary">
+                    <img
+                      src={SERVICE_IMAGES[s.slug] || corporateSvc}
+                      alt={s.title}
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/30 to-transparent" />
+                    <div className="absolute left-4 top-4 flex h-11 w-11 items-center justify-center rounded-md bg-gold text-primary shadow-gold" style={{ boxShadow: "var(--shadow-gold)" }}>
+                      <s.icon className="h-5 w-5" />
+                    </div>
+                    <div className="absolute bottom-4 left-4 right-4">
+                      <h3 className="font-display text-xl font-bold text-primary-foreground">{s.title}</h3>
+                    </div>
                   </div>
-                  <h3 className="font-display mt-5 text-xl text-primary">{s.title}</h3>
-                  <p className="mt-2 text-sm text-muted-foreground line-clamp-3">{s.short}</p>
-                  <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-gold">
-                    Learn more <ArrowRight className="h-3.5 w-3.5" />
-                  </span>
+                  <div className="p-5">
+                    <p className="text-sm text-muted-foreground line-clamp-2">{s.short}</p>
+                    <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-gold">
+                      Learn more <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                    </span>
+                  </div>
                 </Link>
               </Reveal>
             ))}
           </div>
-          <div className="mt-10 text-center">
+          <div className="mt-12 text-center">
             <Link to="/services" className="btn-gold">View all 19 services <ArrowRight className="h-4 w-4" /></Link>
           </div>
         </div>
@@ -175,12 +260,15 @@ const Home = () => {
         </div>
       </section>
 
-      {/* INDUSTRIES */}
-      <section className="section bg-primary text-primary-foreground">
-        <div className="container-wide">
+      {/* INDUSTRIES — bold dark band */}
+      <section className="section relative overflow-hidden bg-primary text-primary-foreground">
+        <img src={bouncerEvent} alt="" className="absolute inset-0 h-full w-full object-cover opacity-15" loading="lazy" />
+        <div className="absolute inset-0 bg-gradient-to-b from-primary via-primary/95 to-primary" />
+        <div className="container-wide relative">
           <div className="mx-auto max-w-2xl text-center">
-            <span className="eyebrow">Industries we secure</span>
+            <span className="eyebrow !text-gold">Industries we secure</span>
             <h2 className="heading-section mt-4 text-primary-foreground">Trusted across every sector in Pune.</h2>
+            <div className="gold-divider mt-6" />
           </div>
           <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {INDUSTRIES.map((i, idx) => (
