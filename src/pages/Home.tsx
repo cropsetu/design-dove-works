@@ -92,13 +92,15 @@ const Home = () => {
             </Reveal>
           </div>
 
+          {/* placeholder removed below — quote form is now a direct grid child */}
+
           {/* Quick quote form — globe-style */}
-          <Reveal delay={300}>
-            <div className="relative lg:col-span-5">
+          <Reveal delay={300} className="lg:col-span-5">
+            <div className="relative">
               <div className="absolute -left-3 -top-3 hidden h-full w-full rounded-lg border-2 border-gold/50 lg:block" />
-              <form onSubmit={onQuickSubmit} className="relative rounded-lg bg-card p-6 shadow-elegant sm:p-8" style={{ boxShadow: "var(--shadow-elegant)" }}>
-                <div className="flex items-center gap-2 border-l-4 border-gold pl-3">
-                  <h2 className="font-display text-xl font-bold uppercase tracking-wider text-primary">Get Started Today</h2>
+              <form onSubmit={onQuickSubmit} className="relative rounded-lg bg-card p-6 shadow-elegant sm:p-7" style={{ boxShadow: "var(--shadow-elegant)" }}>
+                <div className="border-l-4 border-gold pl-3">
+                  <h2 className="font-display text-xl font-bold uppercase tracking-wider text-primary sm:text-2xl">Get Started Today</h2>
                 </div>
                 <p className="mt-2 text-xs text-muted-foreground">Quote within the hour. Free site survey.</p>
                 <div className="mt-5 space-y-3">
@@ -153,32 +155,30 @@ const Home = () => {
       {/* ABOUT PREVIEW */}
       <section className="section">
         <div className="container-wide grid items-center gap-12 lg:grid-cols-12">
-          <Reveal>
-            <div className="relative lg:col-span-6">
-              <img src={aboutImg} alt="Star Security leadership" className="rounded-lg shadow-elegant" width={1280} height={900} loading="lazy" style={{ boxShadow: "var(--shadow-elegant)" }} />
-              <img src={detailUniform} alt="Security uniform detail" className="absolute -bottom-10 -right-6 hidden w-48 rounded-lg border-4 border-background shadow-elegant md:block" loading="lazy" style={{ boxShadow: "var(--shadow-elegant)" }} />
-              <div className="absolute -left-4 -top-4 rounded-lg border border-gold/50 bg-gold px-5 py-3 text-primary shadow-gold" style={{ boxShadow: "var(--shadow-gold)" }}>
-                <div className="font-mono-num text-3xl font-bold leading-none">18+</div>
+          <Reveal className="lg:col-span-6">
+            <div className="relative">
+              <img src={aboutImg} alt="Star Security leadership" className="w-full rounded-lg shadow-elegant" width={1280} height={900} loading="lazy" style={{ boxShadow: "var(--shadow-elegant)" }} />
+              <img src={detailUniform} alt="Security uniform detail" className="absolute -bottom-6 -right-6 hidden w-40 rounded-lg border-4 border-background shadow-elegant lg:block" loading="lazy" style={{ boxShadow: "var(--shadow-elegant)" }} />
+              <div className="absolute -left-3 -top-3 rounded-lg bg-gold px-4 py-2.5 text-primary shadow-gold sm:-left-4 sm:-top-4 sm:px-5 sm:py-3" style={{ boxShadow: "var(--shadow-gold)" }}>
+                <div className="font-mono-num text-2xl font-bold leading-none sm:text-3xl">18+</div>
                 <div className="text-[10px] uppercase tracking-widest">Years</div>
               </div>
             </div>
           </Reveal>
-          <Reveal delay={120}>
-            <div className="lg:col-span-6">
-              <span className="eyebrow">Welcome to Star Security</span>
-              <h2 className="heading-section mt-4 text-primary">A Pune family business, built on trust.</h2>
-              <p className="mt-5 text-muted-foreground leading-relaxed">
-                Founded in 2007 by Late Anil Kamble and now led by MD Sonali Kamble, Star Security & Bouncer has grown into one of Pune's most respected private-security agencies. We protect over 500 sites — from MIDC factories and IT campuses to weddings, hospitals and gated societies — with PSARA-trained, police-verified personnel and real on-ground supervision.
-              </p>
-              <ul className="mt-6 grid gap-2.5 sm:grid-cols-2">
-                {["PSARA Licensed Agency","ISO 9001:2015 Certified","Pune Police Permitted","2000+ trained personnel"].map(p => (
-                  <li key={p} className="flex items-center gap-2 text-sm"><CheckCircle2 className="h-4 w-4 text-gold" />{p}</li>
-                ))}
-              </ul>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Link to="/about" className="btn-gold">Read our story <ArrowRight className="h-4 w-4" /></Link>
-                <button onClick={() => openModal()} className="inline-flex items-center justify-center gap-2 rounded-md border-2 border-primary px-6 py-3 text-sm font-semibold uppercase tracking-wider text-primary transition hover:bg-primary hover:text-primary-foreground">Get a Quote</button>
-              </div>
+          <Reveal delay={120} className="lg:col-span-6">
+            <span className="eyebrow">Welcome to Star Security</span>
+            <h2 className="heading-section mt-4 text-primary">A Pune family business, built on trust.</h2>
+            <p className="mt-5 text-muted-foreground leading-relaxed">
+              Founded in 2007 by Late Anil Kamble and now led by MD Sonali Kamble, Star Security & Bouncer has grown into one of Pune's most respected private-security agencies. We protect over 500 sites — from MIDC factories and IT campuses to weddings, hospitals and gated societies — with PSARA-trained, police-verified personnel and real on-ground supervision.
+            </p>
+            <ul className="mt-6 grid gap-2.5 sm:grid-cols-2">
+              {["PSARA Licensed Agency","ISO 9001:2015 Certified","Pune Police Permitted","2000+ trained personnel"].map(p => (
+                <li key={p} className="flex items-center gap-2 text-sm"><CheckCircle2 className="h-4 w-4 text-gold" />{p}</li>
+              ))}
+            </ul>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link to="/about" className="btn-gold">Read our story <ArrowRight className="h-4 w-4" /></Link>
+              <button onClick={() => openModal()} className="inline-flex items-center justify-center gap-2 rounded-md border-2 border-primary px-6 py-3 text-sm font-semibold uppercase tracking-wider text-primary transition hover:bg-primary hover:text-primary-foreground">Get a Quote</button>
             </div>
           </Reveal>
         </div>
