@@ -95,12 +95,12 @@ const Home = () => {
           {/* placeholder removed below — quote form is now a direct grid child */}
 
           {/* Quick quote form — globe-style */}
-          <Reveal delay={300}>
-            <div className="relative lg:col-span-5">
+          <Reveal delay={300} className="lg:col-span-5">
+            <div className="relative">
               <div className="absolute -left-3 -top-3 hidden h-full w-full rounded-lg border-2 border-gold/50 lg:block" />
-              <form onSubmit={onQuickSubmit} className="relative rounded-lg bg-card p-6 shadow-elegant sm:p-8" style={{ boxShadow: "var(--shadow-elegant)" }}>
-                <div className="flex items-center gap-2 border-l-4 border-gold pl-3">
-                  <h2 className="font-display text-xl font-bold uppercase tracking-wider text-primary">Get Started Today</h2>
+              <form onSubmit={onQuickSubmit} className="relative rounded-lg bg-card p-6 shadow-elegant sm:p-7" style={{ boxShadow: "var(--shadow-elegant)" }}>
+                <div className="border-l-4 border-gold pl-3">
+                  <h2 className="font-display text-xl font-bold uppercase tracking-wider text-primary sm:text-2xl">Get Started Today</h2>
                 </div>
                 <p className="mt-2 text-xs text-muted-foreground">Quote within the hour. Free site survey.</p>
                 <div className="mt-5 space-y-3">
