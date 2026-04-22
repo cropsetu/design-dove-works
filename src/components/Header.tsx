@@ -1,0 +1,136 @@
+import { Link, NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Menu, X, Phone, ChevronDown, ShieldCheck } from "lucide-react";
+import { SITE, SERVICES } from "@/data/site";
+import { useQuote } from "@/context/QuoteContext";
+import { cn } from "@/lib/utils";
+
+export const Header = () => {
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [svcOpen, setSvcOpen] = useState(false);
+  const { openModal } = useQuote();
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => { setOpen(false); setSvcOpen(false); }, []);
+
+  const nav = [
+    { to: "/", label: "Home", end: true },
+    { to: "/about", label: "About" },
+    { to: "/services", label: "Services", hasDropdown: true },
+    { to: "/training", label: "Training" },
+    { to: "/clients", label: "Clients" },
+    { to: "/gallery", label: "Gallery" },
+    { to: "/contact", label: "Contact" },
+  ];
+
+  return (
+    <>
+      {/* Utility strip */}
+      <div className="hidden bg-primary text-primary-foreground/90 lg:block">
+        <div className="container-wide flex h-9 items-center justify-between text-xs">
+          <div className="flex items-center gap-4">
+            {SITE.badges.map(b => (
+              <span key={b} className="flex items-center gap-1.5">
+                <ShieldCheck className="h-3.5 w-3.5 text-gold" />{b}
+              </span>
+            ))}
+          </div>
+          <div className="flex items-center gap-4">
+            <a href={`tel:${SITE.phone}`} className="hover:text-gold transition">📞 {SITE.phoneDisplay}</a>
+            <a href={`mailto:${SITE.email}`} className="hover:text-gold transition">✉ {SITE.email}</a>
+            <a href={`https://wa.me/${SITE.whatsapp}`} target="_blank" rel="noopener" className="hover:text-gold transition">WhatsApp</a>
+          </div>
+        </div>
+      </div>
+
+      <header className={cn(
+        "sticky top-0 z-40 border-b border-border/60 bg-background/95 backdrop-blur transition-all",
+        scrolled && "shadow-md"
+      )}>
+        <div className="container-wide flex h-16 items-center justify-between lg:h-20">
+          <Link to="/" className="flex items-center gap-2.5 group">
+            <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary text-primary-foreground transition-transform group-hover:scale-105">
+              <ShieldCheck className="h-5 w-5 text-gold" />
+            </div>
+            <div className="leading-tight">
+              <div className="font-display text-lg font-bold text-primary">Star Security</div>
+              <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">& Bouncer · Pune</div>
+            </div>
+          </Link>
+
+          <nav className="hidden items-center gap-1 lg:flex">
+            {nav.map(n => n.hasDropdown ? (
+              <div key={n.to} className="relative" onMouseEnter={() => setSvcOpen(true)} onMouseLeave={() => setSvcOpen(false)}>
+                <NavLink to={n.to} className={({ isActive }) => cn(
+                  "flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                  isActive ? "text-gold" : "text-foreground hover:text-gold"
+                )}>
+                  {n.label}<ChevronDown className="h-3.5 w-3.5" />
+                </NavLink>
+                {svcOpen && (
+                  <div className="absolute left-1/2 top-full z-50 w-[640px] -translate-x-1/2 pt-2">
+                    <div className="grid grid-cols-2 gap-1 rounded-lg border bg-card p-3 shadow-elegant" style={{ boxShadow: "var(--shadow-elegant)" }}>
+                      {SERVICES.slice(0, 12).map(s => (
+                        <Link key={s.slug} to={`/services/${s.slug}`} className="flex items-start gap-3 rounded-md p-2.5 transition-colors hover:bg-muted">
+                          <s.icon className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
+                          <div>
+                            <div className="text-sm font-semibold text-primary">{s.title}</div>
+                            <div className="line-clamp-1 text-xs text-muted-foreground">{s.short}</div>
+                          </div>
+                        </Link>
+                      ))}
+                      <Link to="/services" className="col-span-2 mt-1 rounded-md bg-primary px-3 py-2 text-center text-xs font-semibold uppercase tracking-wider text-primary-foreground hover:bg-primary-glow">
+                        View all 19 services →
+                      </Link>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <NavLink key={n.to} to={n.to} end={n.end} className={({ isActive }) => cn(
+                "rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                isActive ? "text-gold" : "text-foreground hover:text-gold"
+              )}>
+                {n.label}
+              </NavLink>
+            ))}
+          </nav>
+
+          <div className="hidden items-center gap-3 lg:flex">
+            <a href={`tel:${SITE.phone}`} className="flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-gold">
+              <Phone className="h-4 w-4" /> {SITE.phoneDisplay}
+            </a>
+            <button onClick={() => openModal()} className="btn-gold !py-2.5 !px-5 !text-xs">Get a Quote</button>
+          </div>
+
+          <button className="lg:hidden p-2" onClick={() => setOpen(o => !o)} aria-label="Menu">
+            {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        </div>
+
+        {/* Mobile drawer */}
+        {open && (
+          <div className="border-t bg-background lg:hidden">
+            <nav className="container-wide flex flex-col py-4">
+              {nav.map(n => (
+                <NavLink key={n.to} to={n.to} end={n.end} onClick={() => setOpen(false)}
+                  className={({ isActive }) => cn("py-2.5 text-sm font-medium border-b border-border/40", isActive ? "text-gold" : "text-foreground")}>
+                  {n.label}
+                </NavLink>
+              ))}
+              <button onClick={() => { setOpen(false); openModal(); }} className="btn-gold mt-4">Get a Quote</button>
+              <a href={`tel:${SITE.phone}`} className="mt-2 text-center text-sm text-muted-foreground">📞 {SITE.phoneDisplay}</a>
+            </nav>
+          </div>
+        )}
+      </header>
+    </>
+  );
+};
