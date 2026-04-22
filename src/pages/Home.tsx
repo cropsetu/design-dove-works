@@ -63,12 +63,12 @@ const Home = () => {
             key={i}
             src={src}
             alt="Star Security operations"
-            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-[1500ms] ease-in-out ${i === slideIdx ? "opacity-30" : "opacity-0"}`}
+            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-[1500ms] ease-in-out ${i === slideIdx ? "opacity-60" : "opacity-0"}`}
             width={1920}
             height={1080}
           />
         ))}
-        <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/90 to-primary/60" />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/70 to-primary/30" />
         <div className="absolute inset-0 bg-gradient-to-t from-primary/95 via-primary/30 to-transparent" />
         {/* slide dots */}
         <div className="absolute bottom-5 left-1/2 z-20 flex -translate-x-1/2 gap-2">
