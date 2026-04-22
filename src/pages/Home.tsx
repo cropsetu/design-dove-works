@@ -92,6 +92,8 @@ const Home = () => {
             </Reveal>
           </div>
 
+          {/* placeholder removed below — quote form is now a direct grid child */}
+
           {/* Quick quote form — globe-style */}
           <Reveal delay={300}>
             <div className="relative lg:col-span-5">
