@@ -8,6 +8,9 @@ import { SERVICES, STATS, INDUSTRIES, TESTIMONIALS, CLIENT_LOGOS, CONCERNS, SOLU
 import heroGuard from "@/assets/hero-guard.jpg";
 import detailUniform from "@/assets/detail-uniform.jpg";
 import bouncerEvent from "@/assets/bouncer-event.jpg";
+import real1 from "@/assets/real-1.jpg";
+import real2 from "@/assets/real-2.jpg";
+import real3 from "@/assets/real-3.jpg";
 import aboutImg from "@/assets/about.jpg";
 import bouncerSvc from "@/assets/service-bouncer.jpg";
 import corporateSvc from "@/assets/service-corporate.jpg";
@@ -32,7 +35,7 @@ const Home = () => {
   const { openModal } = useQuote();
   const [quickName, setQuickName] = useState("");
   const [quickPhone, setQuickPhone] = useState("");
-  const heroSlides = [heroGuard, bouncerEvent, detailUniform];
+  const heroSlides = [real1, real2, real3, heroGuard];
   const [slideIdx, setSlideIdx] = useState(0);
   useEffect(() => {
     const t = setInterval(() => setSlideIdx(i => (i + 1) % heroSlides.length), 5000);
