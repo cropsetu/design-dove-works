@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ArrowRight, CheckCircle2, ShieldCheck, X, Phone, Quote, Star, MessageCircle } from "lucide-react";
 import { SEO, localBusinessJsonLd } from "@/components/SEO";
 import { Reveal } from "@/components/Reveal";
@@ -32,6 +32,12 @@ const Home = () => {
   const { openModal } = useQuote();
   const [quickName, setQuickName] = useState("");
   const [quickPhone, setQuickPhone] = useState("");
+  const heroSlides = [heroGuard, bouncerEvent, detailUniform];
+  const [slideIdx, setSlideIdx] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setSlideIdx(i => (i + 1) % heroSlides.length), 5000);
+    return () => clearInterval(t);
+  }, []);
 
   const onQuickSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,11 +53,31 @@ const Home = () => {
         jsonLd={localBusinessJsonLd()}
       />
 
-      {/* HERO — split layout, photo-led, with inline quote form */}
+      {/* HERO — split layout, photo-led, with faint auto carousel + inline quote form */}
       <section className="relative overflow-hidden bg-primary text-primary-foreground">
-        <img src={heroGuard} alt="Star Security guard on duty in Pune" className="absolute inset-0 h-full w-full object-cover opacity-40" width={1920} height={1080} />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/85 to-primary/40" />
-        <div className="absolute inset-0 bg-gradient-to-t from-primary/95 via-transparent to-transparent" />
+        {heroSlides.map((src, i) => (
+          <img
+            key={i}
+            src={src}
+            alt="Star Security operations"
+            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-[1500ms] ease-in-out ${i === slideIdx ? "opacity-30" : "opacity-0"}`}
+            width={1920}
+            height={1080}
+          />
+        ))}
+        <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/90 to-primary/60" />
+        <div className="absolute inset-0 bg-gradient-to-t from-primary/95 via-primary/30 to-transparent" />
+        {/* slide dots */}
+        <div className="absolute bottom-5 left-1/2 z-20 flex -translate-x-1/2 gap-2">
+          {heroSlides.map((_, i) => (
+            <button
+              key={i}
+              aria-label={`Slide ${i + 1}`}
+              onClick={() => setSlideIdx(i)}
+              className={`h-1.5 rounded-full transition-all ${i === slideIdx ? "w-8 bg-gold" : "w-2 bg-primary-foreground/40"}`}
+            />
+          ))}
+        </div>
         <div className="container-wide relative z-10 grid items-center gap-10 py-20 lg:grid-cols-12 lg:py-28">
           <div className="lg:col-span-7">
             <Reveal>
