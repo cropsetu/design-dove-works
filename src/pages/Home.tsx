@@ -7,12 +7,13 @@ import { useQuote } from "@/context/QuoteContext";
 import { useToast } from "@/hooks/use-toast";
 import { SERVICES, STATS, INDUSTRIES, TESTIMONIALS, CLIENT_LOGOS, CONCERNS, SOLUTIONS, AWARDS, SITE } from "@/data/site";
 import heroGuard from "@/assets/hero-guard.webp";
-import detailUniform from "@/assets/detail-uniform.webp";
 import bouncerEvent from "@/assets/bouncer-event.webp";
 import real1 from "@/assets/real-1.webp";
 import real2 from "@/assets/real-2.webp";
 import real3 from "@/assets/real-3.webp";
-import aboutImg from "@/assets/about.webp";
+// Photo of MD Sonali Kamble in front of the Star Security & Bouncer banner —
+// used in the "Why Star Security" section.
+import aboutImg from "@/assets/home-md.webp";
 // Service-specific WebP heroes (~50 KB each). Same images used on each service detail page.
 import securityGuardServicesImg from "@/assets/services/security-guard-services.webp";
 import campusPerimeterImg from "@/assets/services/campus-perimeter-combat-security.webp";
@@ -312,35 +313,63 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ABOUT PREVIEW */}
+      {/* ABOUT PREVIEW — Sonali Kamble photo + Why Star Security narrative */}
       <section className="section">
-        <div className="container-wide grid items-center gap-12 lg:grid-cols-12">
-          <Reveal className="lg:col-span-6">
-            <div className="relative">
-              <img src={aboutImg} alt="Star Security leadership" className="w-full rounded-lg shadow-elegant" width={1280} height={900} loading="lazy" style={{ boxShadow: "var(--shadow-elegant)" }} />
-              <img src={detailUniform} alt="Security uniform detail" className="absolute -bottom-6 -right-6 hidden w-40 rounded-lg border-4 border-background shadow-elegant lg:block" loading="lazy" style={{ boxShadow: "var(--shadow-elegant)" }} />
-              <div className="absolute -left-3 -top-3 rounded-lg bg-gold px-4 py-2.5 text-primary shadow-gold sm:-left-4 sm:-top-4 sm:px-5 sm:py-3" style={{ boxShadow: "var(--shadow-gold)" }}>
+        <div className="container-wide grid gap-12 lg:grid-cols-12 lg:items-center">
+          <Reveal className="lg:col-span-5">
+            <div className="relative mx-auto max-w-md lg:mx-0 lg:max-w-none">
+              {/* Decorative offset gold border peeks behind the photo */}
+              <div
+                aria-hidden
+                className="absolute -left-3 -top-3 hidden h-full w-full rounded-lg border-2 border-gold/40 lg:block"
+              />
+              <img
+                src={aboutImg}
+                alt="Sonali Kamble — Managing Director of Star Security & Bouncer"
+                className="relative w-full rounded-lg shadow-elegant"
+                width={1280}
+                height={1280}
+                loading="lazy"
+                decoding="async"
+                style={{ boxShadow: "var(--shadow-elegant)" }}
+              />
+              {/* Floating gold "18+ Years" badge — top-right corner */}
+              <div
+                className="absolute -right-3 -top-3 rounded-lg bg-gold px-4 py-2.5 text-primary shadow-gold sm:-right-4 sm:-top-4 sm:px-5 sm:py-3"
+                style={{ boxShadow: "var(--shadow-gold)" }}
+              >
                 <div className="font-mono-num text-2xl font-bold leading-none sm:text-3xl">18+</div>
                 <div className="text-[10px] uppercase tracking-widest">Years</div>
               </div>
+              {/* Caption pill bottom-left */}
+              <div className="absolute -bottom-3 left-3 rounded-md bg-primary px-3 py-1.5 text-primary-foreground shadow-md">
+                <div className="text-[9px] uppercase tracking-[0.2em] text-gold">Managing Director</div>
+                <div className="font-display text-sm font-bold">Sonali Kamble</div>
+              </div>
             </div>
           </Reveal>
-          <Reveal delay={120} className="lg:col-span-6">
+
+          <Reveal delay={120} className="lg:col-span-7">
             <span className="eyebrow">Why Star Security</span>
             <h2 className="heading-section mt-4 text-primary">
               Two decades of <span className="text-gold">disciplined</span> private security.
             </h2>
-            <p className="mt-5 text-muted-foreground leading-relaxed">
+            <p className="mt-5 leading-relaxed text-muted-foreground">
               Founded in 2007 by Late Anil Kamble and now led by MD Sonali Kamble, Star Security & Bouncer has grown into one of Pune's most respected private-security agencies. We protect over 500 sites — from MIDC factories and IT campuses to weddings, hospitals and gated societies — with PSARA-trained, police-verified personnel and real on-ground supervision.
             </p>
             <ul className="mt-6 grid gap-2.5 sm:grid-cols-2">
-              {["PSARA Licensed Agency","ISO 9001:2015 Certified","Pune Police Permitted","2000+ trained personnel"].map(p => (
-                <li key={p} className="flex items-center gap-2 text-sm"><CheckCircle2 className="h-4 w-4 text-gold" />{p}</li>
+              {["PSARA Licensed Agency", "ISO 9001:2015 Certified", "Pune Police Permitted", "2000+ trained personnel"].map(p => (
+                <li key={p} className="flex items-center gap-2 text-sm">
+                  <CheckCircle2 className="h-4 w-4 text-gold" />
+                  {p}
+                </li>
               ))}
             </ul>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link to="/about" className="btn-gold">Read our story <ArrowRight className="h-4 w-4" /></Link>
-              <button onClick={() => openModal()} className="inline-flex items-center justify-center gap-2 rounded-md border-2 border-primary px-6 py-3 text-sm font-semibold uppercase tracking-wider text-primary transition hover:bg-primary hover:text-primary-foreground">Get a Quote</button>
+              <button onClick={() => openModal()} className="inline-flex items-center justify-center gap-2 rounded-md border-2 border-primary px-6 py-3 text-sm font-semibold uppercase tracking-wider text-primary transition hover:bg-primary hover:text-primary-foreground">
+                Get a Quote
+              </button>
             </div>
           </Reveal>
         </div>
