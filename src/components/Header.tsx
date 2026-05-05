@@ -85,9 +85,15 @@ export const Header = () => {
               fetchPriority="high"
               className="h-14 w-14 shrink-0 object-contain transition-transform group-hover:scale-105"
             />
-            <div className="leading-tight">
-              <div className="font-display text-xl font-bold text-primary sm:text-2xl">Star Security</div>
-              <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground sm:text-sm">& Bouncer · Pune</div>
+            <div className="leading-none">
+              <div className="font-display text-2xl font-black tracking-tight sm:text-3xl">
+                <span className="text-gold">STAR</span>
+                <span className="ml-1.5 text-primary">Security</span>
+              </div>
+              <div className="mt-2 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.3em] text-muted-foreground sm:text-xs">
+                <span aria-hidden className="h-px w-5 bg-gradient-to-r from-gold to-transparent" />
+                & Bouncer · Pune
+              </div>
             </div>
           </Link>
 

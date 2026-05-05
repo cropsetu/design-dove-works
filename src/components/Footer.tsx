@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { MapPin, Phone, Mail, Facebook, Instagram, Linkedin, Youtube } from "lucide-react";
+import { MapPin, Phone, Mail, Facebook, Instagram, Linkedin, Youtube, Sparkles, ArrowRight } from "lucide-react";
 import { SITE, SERVICES, PUNE_LOCALITIES } from "@/data/site";
 import logoUrl from "@/assets/logo.webp";
 
@@ -15,9 +15,15 @@ export const Footer = () => {
               <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-md bg-white p-2">
                 <img src={logoUrl} alt="" width={72} height={72} loading="lazy" decoding="async" className="h-full w-full object-contain" />
               </div>
-              <div>
-                <div className="font-display text-xl font-bold sm:text-2xl">Star Security</div>
-                <div className="text-xs uppercase tracking-[0.2em] text-primary-foreground/70 sm:text-sm">& Bouncer · Pune</div>
+              <div className="leading-none">
+                <div className="font-display text-2xl font-black tracking-tight sm:text-3xl">
+                  <span className="text-gold">STAR</span>
+                  <span className="ml-1.5">Security</span>
+                </div>
+                <div className="mt-2 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.3em] text-primary-foreground/70 sm:text-xs">
+                  <span aria-hidden className="h-px w-5 bg-gradient-to-r from-gold to-transparent" />
+                  & Bouncer · Pune
+                </div>
               </div>
             </div>
             <p className="mt-4 text-sm leading-relaxed text-primary-foreground/75">{SITE.description}</p>
@@ -76,6 +82,21 @@ export const Footer = () => {
             <Link to="/terms" className="hover:text-gold">Terms of Service</Link>
             <Link to="/sitemap" className="hover:text-gold">Sitemap</Link>
           </div>
+        </div>
+
+        {/* Developer credit — gold-bordered chip with hover animation */}
+        <div className="mt-6 flex justify-center">
+          <a
+            href="https://www.typingcodeai.com"
+            target="_blank"
+            rel="noopener"
+            className="group inline-flex items-center gap-2.5 rounded-full border border-gold/40 bg-gold/[0.06] px-5 py-2 text-xs text-primary-foreground/85 backdrop-blur transition-all duration-300 hover:-translate-y-0.5 hover:border-gold hover:bg-gold/15 hover:shadow-lg"
+          >
+            <Sparkles className="h-3.5 w-3.5 text-gold transition-transform duration-500 group-hover:rotate-12" />
+            <span>Designed &amp; developed by</span>
+            <span className="font-bold tracking-wide text-gold">typingcodeai.com</span>
+            <ArrowRight className="h-3 w-3 -translate-x-1 text-gold opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
+          </a>
         </div>
       </div>
     </footer>
