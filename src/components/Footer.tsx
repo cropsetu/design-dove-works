@@ -15,14 +15,14 @@ export const Footer = () => {
               <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-md bg-white p-2">
                 <img src={logoUrl} alt="" width={72} height={72} loading="lazy" decoding="async" className="h-full w-full object-contain" />
               </div>
-              <div className="leading-none">
-                <div className="font-display text-2xl font-black tracking-tight sm:text-3xl">
-                  <span className="text-gold">STAR</span>
-                  <span className="ml-1.5">Security</span>
+              <div className="leading-[0.95]">
+                {/* Hero — STAR */}
+                <div className="font-display text-3xl font-black tracking-tight text-gold sm:text-4xl">
+                  STAR
                 </div>
-                <div className="mt-2 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.3em] text-primary-foreground/70 sm:text-xs">
-                  <span aria-hidden className="h-px w-5 bg-gradient-to-r from-gold to-transparent" />
-                  & Bouncer · Pune
+                {/* Both services equally weighted, mixed-case to match the real brand mark */}
+                <div className="mt-1 font-display text-base font-bold tracking-tight sm:text-lg">
+                  Security <span className="text-gold">&amp;</span> Bouncer
                 </div>
               </div>
             </div>
