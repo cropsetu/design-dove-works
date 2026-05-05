@@ -4,7 +4,7 @@ import { SEO, localBusinessJsonLd } from "@/components/SEO";
 import { Reveal } from "@/components/Reveal";
 import { useQuote } from "@/context/QuoteContext";
 import { PUNE_LOCALITIES, SERVICES, SITE } from "@/data/site";
-import heroImg from "@/assets/hero-security.jpg";
+import heroImg from "@/assets/hero-security.webp";
 
 // /security-services-in-:locality
 const Locality = () => {

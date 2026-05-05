@@ -4,7 +4,7 @@ import { SEO, serviceJsonLd, localBusinessJsonLd } from "@/components/SEO";
 import { Reveal } from "@/components/Reveal";
 import { useQuote } from "@/context/QuoteContext";
 import { SERVICES, SITE, SERVICE_CITY_COMBOS } from "@/data/site";
-import heroImg from "@/assets/hero-security.jpg";
+import heroImg from "@/assets/hero-security.webp";
 
 // /:serviceSlug-in-:city  e.g. /bouncer-services-in-pune
 const ServiceCity = () => {

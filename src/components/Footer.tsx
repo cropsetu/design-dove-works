@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
-import { ShieldCheck, MapPin, Phone, Mail, Facebook, Instagram, Linkedin, Youtube } from "lucide-react";
+import { MapPin, Phone, Mail, Facebook, Instagram, Linkedin, Youtube } from "lucide-react";
 import { SITE, SERVICES, PUNE_LOCALITIES } from "@/data/site";
+import logoUrl from "@/assets/logo.webp";
 
 export const Footer = () => {
   return (
@@ -8,13 +9,15 @@ export const Footer = () => {
       <div className="container-wide pt-16 pb-8">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div>
-            <div className="flex items-center gap-2.5">
-              <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary-glow">
-                <ShieldCheck className="h-5 w-5 text-gold" />
+            <div className="flex items-center gap-3">
+              {/* Logo container has a soft white pill so the dark navy lines
+                  in the brand mark stay readable on the navy footer. */}
+              <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-md bg-white p-2">
+                <img src={logoUrl} alt="" width={72} height={72} loading="lazy" decoding="async" className="h-full w-full object-contain" />
               </div>
               <div>
-                <div className="font-display text-lg font-bold">Star Security</div>
-                <div className="text-[10px] uppercase tracking-[0.2em] text-primary-foreground/70">& Bouncer · Pune</div>
+                <div className="font-display text-xl font-bold sm:text-2xl">Star Security</div>
+                <div className="text-xs uppercase tracking-[0.2em] text-primary-foreground/70 sm:text-sm">& Bouncer · Pune</div>
               </div>
             </div>
             <p className="mt-4 text-sm leading-relaxed text-primary-foreground/75">{SITE.description}</p>

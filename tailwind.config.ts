@@ -31,6 +31,9 @@ export default {
           DEFAULT: "hsl(var(--gold))",
           foreground: "hsl(var(--gold-foreground))",
           soft: "hsl(var(--gold-soft))",
+          // AA-compliant variant for gold text on light/white backgrounds.
+          // Use class `text-gold-text` for gold-coloured body copy on white.
+          text: "hsl(var(--gold-text))",
         },
         whatsapp: {
           DEFAULT: "hsl(var(--whatsapp))",

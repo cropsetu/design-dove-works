@@ -5,13 +5,22 @@ interface SEOProps {
   title: string;
   description: string;
   path?: string;
+  /**
+   * Optional absolute URL for the social-share preview image. Defaults to the
+   * brand /og-image.jpg if omitted. Service pages should pass their hero
+   * WebP for richer link previews.
+   */
+  image?: string;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
   noindex?: boolean;
 }
 
-export const SEO = ({ title, description, path = "/", jsonLd, noindex }: SEOProps) => {
+const DEFAULT_OG_IMAGE = "https://www.starsecuritybouncer.com/og-image.jpg";
+
+export const SEO = ({ title, description, path = "/", image, jsonLd, noindex }: SEOProps) => {
   const url = `https://www.starsecuritybouncer.com${path}`;
   const fullTitle = title.includes(SITE.shortName) ? title : `${title} | ${SITE.name}`;
+  const ogImage = image || DEFAULT_OG_IMAGE;
   const ldArray = Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [];
 
   return (
@@ -24,9 +33,13 @@ export const SEO = ({ title, description, path = "/", jsonLd, noindex }: SEOProp
       <meta property="og:description" content={description} />
       <meta property="og:url" content={url} />
       <meta property="og:type" content="website" />
+      <meta property="og:image" content={ogImage} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content={ogImage} />
       {ldArray.map((ld, i) => (
         <script key={i} type="application/ld+json">{JSON.stringify(ld)}</script>
       ))}

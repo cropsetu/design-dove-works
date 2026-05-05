@@ -1,9 +1,10 @@
 import { Link, NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Menu, X, Phone, ChevronDown, ShieldCheck, MessageCircle, Mail, FileText } from "lucide-react";
+import { Menu, X, Phone, ChevronDown, MessageCircle, Mail, FileText } from "lucide-react";
 import { SITE, SERVICES } from "@/data/site";
 import { useQuote } from "@/context/QuoteContext";
 import { cn } from "@/lib/utils";
+import logoUrl from "@/assets/logo.webp";
 
 export const Header = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -74,13 +75,19 @@ export const Header = () => {
         scrolled && "shadow-md"
       )}>
         <div className="container-wide flex h-16 items-center justify-between lg:h-20">
-          <Link to="/" className="flex items-center gap-2.5 group">
-            <div className="flex h-11 w-11 items-center justify-center rounded-md bg-primary text-primary-foreground transition-transform group-hover:scale-105">
-              <ShieldCheck className="h-5 w-5 text-gold" />
-            </div>
+          <Link to="/" className="group flex items-center gap-3" aria-label="Star Security & Bouncer — home">
+            <img
+              src={logoUrl}
+              alt=""
+              width={56}
+              height={56}
+              decoding="async"
+              fetchPriority="high"
+              className="h-14 w-14 shrink-0 object-contain transition-transform group-hover:scale-105"
+            />
             <div className="leading-tight">
-              <div className="font-display text-lg font-bold text-primary">Star Security</div>
-              <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">& Bouncer · Pune</div>
+              <div className="font-display text-xl font-bold text-primary sm:text-2xl">Star Security</div>
+              <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground sm:text-sm">& Bouncer · Pune</div>
             </div>
           </Link>
 

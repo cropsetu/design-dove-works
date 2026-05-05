@@ -4,37 +4,65 @@ import { ArrowRight, CheckCircle2, ShieldCheck, X, Phone, Quote, Star, MessageCi
 import { SEO, localBusinessJsonLd } from "@/components/SEO";
 import { Reveal } from "@/components/Reveal";
 import { useQuote } from "@/context/QuoteContext";
+import { useToast } from "@/hooks/use-toast";
 import { SERVICES, STATS, INDUSTRIES, TESTIMONIALS, CLIENT_LOGOS, CONCERNS, SOLUTIONS, AWARDS, SITE } from "@/data/site";
-import heroGuard from "@/assets/hero-guard.jpg";
-import detailUniform from "@/assets/detail-uniform.jpg";
-import bouncerEvent from "@/assets/bouncer-event.jpg";
-import real1 from "@/assets/real-1.jpg";
-import real2 from "@/assets/real-2.jpg";
-import real3 from "@/assets/real-3.jpg";
-import aboutImg from "@/assets/about.jpg";
-import bouncerSvc from "@/assets/service-bouncer.jpg";
-import corporateSvc from "@/assets/service-corporate.jpg";
-import residentialSvc from "@/assets/service-residential.jpg";
-import vvipSvc from "@/assets/service-vvip.jpg";
-import industrialSvc from "@/assets/service-industrial.jpg";
-import trainingImg from "@/assets/training.jpg";
+import heroGuard from "@/assets/hero-guard.webp";
+import detailUniform from "@/assets/detail-uniform.webp";
+import bouncerEvent from "@/assets/bouncer-event.webp";
+import real1 from "@/assets/real-1.webp";
+import real2 from "@/assets/real-2.webp";
+import real3 from "@/assets/real-3.webp";
+import aboutImg from "@/assets/about.webp";
+// Service-specific WebP heroes (~50 KB each). Same images used on each service detail page.
+import securityGuardServicesImg from "@/assets/services/security-guard-services.webp";
+import campusPerimeterImg from "@/assets/services/campus-perimeter-combat-security.webp";
+import bouncerSecurityImg from "@/assets/services/bouncer-security-services.webp";
+import corporateSecurityImg from "@/assets/services/corporate-security-services.webp";
+import mallComplexImg from "@/assets/services/security-for-mall-and-commercial-complexes.webp";
+import celebritiesImg from "@/assets/services/security-for-celebrities.webp";
+import residentialSocietyImg from "@/assets/services/residential-society-or-complexes-security.webp";
+import personalGuardImg from "@/assets/services/security-for-personal-guard.webp";
+import warehouseGodownsImg from "@/assets/services/security-for-warehouses-godowns.webp";
+import banksAtmsImg from "@/assets/services/security-for-banks-or-atms.webp";
+import hospitalImg from "@/assets/services/security-services-for-hospital.webp";
+import educationalInstitutionsImg from "@/assets/services/security-services-for-educational-institutions.webp";
+import hotelsRestaurantsImg from "@/assets/services/security-guards-for-hotels-or-restaurants.webp";
+import bankingCustomerSafetyImg from "@/assets/services/banking-institutional-and-customer-safety.webp";
+import secureTransitImg from "@/assets/services/secure-transit-security.webp";
+import realEstateMarketImg from "@/assets/services/real-estate-and-market-place-security.webp";
+import womenSafetyTransportImg from "@/assets/services/women-safety-and-transport-security.webp";
+import vvipSecurityImg from "@/assets/services/vvip-security.webp";
+import eventManagementImg from "@/assets/services/event-management-security.webp";
 
 const SERVICE_IMAGES: Record<string, string> = {
-  "manned-guarding": corporateSvc,
-  "bouncer-bodyguard": bouncerSvc,
-  "event-security": bouncerEvent,
-  "corporate-security": corporateSvc,
-  "industrial-security": industrialSvc,
-  "residential-society-security": residentialSvc,
-  "personal-security": vvipSvc,
-  "mall-retail-security": trainingImg,
-  "warehouse-security": industrialSvc,
+  "security-guard-services": securityGuardServicesImg,
+  "campus-perimeter-combat-security": campusPerimeterImg,
+  "bouncer-security-services": bouncerSecurityImg,
+  "corporate-security-services": corporateSecurityImg,
+  "security-for-mall-and-commercial-complexes": mallComplexImg,
+  "security-for-celebrities": celebritiesImg,
+  "residential-society-or-complexes-security": residentialSocietyImg,
+  "security-for-personal-guard": personalGuardImg,
+  "security-for-warehouses-godowns": warehouseGodownsImg,
+  "security-for-banks-or-atms": banksAtmsImg,
+  "security-services-for-hospital": hospitalImg,
+  "security-services-for-educational-institutions": educationalInstitutionsImg,
+  "security-guards-for-hotels-or-restaurants": hotelsRestaurantsImg,
+  "banking-institutional-and-customer-safety": bankingCustomerSafetyImg,
+  "secure-transit-security": secureTransitImg,
+  "real-estate-and-market-place-security": realEstateMarketImg,
+  "women-safety-and-transport-security": womenSafetyTransportImg,
+  "vvip-security": vvipSecurityImg,
+  "event-management-security": eventManagementImg,
 };
 
 const Home = () => {
   const { openModal } = useQuote();
+  const { toast } = useToast();
   const [quickName, setQuickName] = useState("");
   const [quickPhone, setQuickPhone] = useState("");
+  const [quickService, setQuickService] = useState("");
+  const [submitting, setSubmitting] = useState(false);
   const heroSlides = [real1, real2, real3, heroGuard];
   const [slideIdx, setSlideIdx] = useState(0);
   useEffect(() => {
@@ -42,9 +70,70 @@ const Home = () => {
     return () => clearInterval(t);
   }, []);
 
-  const onQuickSubmit = (e: React.FormEvent) => {
+  const onQuickSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    openModal();
+    if (submitting) return;
+    setSubmitting(true);
+
+    const ts = new Date();
+    const lead = {
+      name: quickName.trim(),
+      phone: quickPhone.trim(),
+      service: quickService.trim() || "(not specified)",
+      ts: ts.toISOString(),
+      source: "home_hero_quick",
+    };
+
+    // Always keep a local backup, even if email fails.
+    try {
+      const existing = JSON.parse(localStorage.getItem("star_leads") || "[]");
+      localStorage.setItem("star_leads", JSON.stringify([lead, ...existing]));
+    } catch {
+      // localStorage unavailable — ignore.
+    }
+
+    // Send to starbouncers@gmail.com via FormSubmit (free, no account needed).
+    let emailOk = false;
+    try {
+      const res = await fetch("https://formsubmit.co/ajax/starbouncers@gmail.com", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          _subject: `[Star Security] Homepage enquiry from ${lead.name}`,
+          _replyto: SITE.email,
+          _template: "table",
+          _captcha: "false",
+          _honey: "",
+          Name: lead.name,
+          Phone: lead.phone,
+          "Service Required": lead.service,
+          Source: "home_hero_quick",
+          "Submitted at": ts.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+        }),
+      });
+      const json = await res.json().catch(() => null);
+      emailOk = res.ok && (json?.success === true || json?.success === "true");
+    } catch {
+      emailOk = false;
+    }
+
+    if (emailOk) {
+      toast({
+        title: "Enquiry sent",
+        description: "We've emailed your enquiry to our team. We'll reach out within the hour.",
+      });
+      setQuickName("");
+      setQuickPhone("");
+      setQuickService("");
+    } else {
+      toast({
+        title: "Couldn't send right now",
+        description: `Please try again, or call us on ${SITE.phones[0].number}.`,
+        variant: "destructive",
+      });
+    }
+
+    setSubmitting(false);
   };
 
   return (
@@ -66,19 +155,31 @@ const Home = () => {
             className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-[1500ms] ease-in-out ${i === slideIdx ? "opacity-60" : "opacity-0"}`}
             width={1920}
             height={1080}
+            loading={i === 0 ? "eager" : "lazy"}
+            decoding="async"
+            fetchPriority={i === 0 ? "high" : "low"}
           />
         ))}
         <div className="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/70 to-primary/30" />
         <div className="absolute inset-0 bg-gradient-to-t from-primary/95 via-primary/30 to-transparent" />
-        {/* slide dots */}
-        <div className="absolute bottom-5 left-1/2 z-20 flex -translate-x-1/2 gap-2">
+        {/* slide dots — each visible dot wrapped in a 44×44 transparent hit-zone
+            so touch targets meet WCAG 2.1 AA (≥ 24×24 minimum, ≥ 44×44 ideal). */}
+        <div className="absolute bottom-3 left-1/2 z-20 flex -translate-x-1/2 gap-1">
           {heroSlides.map((_, i) => (
             <button
               key={i}
-              aria-label={`Slide ${i + 1}`}
+              aria-label={`Show slide ${i + 1} of ${heroSlides.length}`}
+              aria-current={i === slideIdx ? "true" : undefined}
               onClick={() => setSlideIdx(i)}
-              className={`h-1.5 rounded-full transition-all ${i === slideIdx ? "w-8 bg-gold" : "w-2 bg-primary-foreground/40"}`}
-            />
+              className="group flex h-11 w-11 items-center justify-center"
+            >
+              <span
+                aria-hidden="true"
+                className={`block h-1.5 rounded-full transition-all ${
+                  i === slideIdx ? "w-8 bg-gold" : "w-2 bg-primary-foreground/50 group-hover:bg-primary-foreground/80"
+                }`}
+              />
+            </button>
           ))}
         </div>
         <div className="container-wide relative z-10 grid items-center gap-10 py-20 lg:grid-cols-12 lg:py-28">
@@ -134,21 +235,51 @@ const Home = () => {
                 <p className="mt-2 text-xs text-muted-foreground">Quote within the hour. Free site survey.</p>
                 <div className="mt-5 space-y-3">
                   <div>
-                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Name</label>
-                    <input value={quickName} onChange={e => setQuickName(e.target.value)} required className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold" />
+                    <label htmlFor="home-name" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Name</label>
+                    <input
+                      id="home-name"
+                      name="name"
+                      value={quickName}
+                      onChange={e => setQuickName(e.target.value)}
+                      required
+                      autoComplete="name"
+                      className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
+                    />
                   </div>
                   <div>
-                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Contact Number</label>
-                    <input value={quickPhone} onChange={e => setQuickPhone(e.target.value)} required type="tel" className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold" />
+                    <label htmlFor="home-phone" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Contact Number</label>
+                    <input
+                      id="home-phone"
+                      name="phone"
+                      value={quickPhone}
+                      onChange={e => setQuickPhone(e.target.value)}
+                      required
+                      type="tel"
+                      autoComplete="tel"
+                      inputMode="tel"
+                      className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
+                    />
                   </div>
                   <div>
-                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Service Required</label>
-                    <select className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold">
-                      <option>Choose a service…</option>
-                      {SERVICES.slice(0, 10).map(s => <option key={s.slug}>{s.title}</option>)}
+                    <label htmlFor="home-service" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Service Required</label>
+                    <select
+                      id="home-service"
+                      name="service"
+                      value={quickService}
+                      onChange={(e) => setQuickService(e.target.value)}
+                      className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm text-foreground focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
+                    >
+                      <option value="">Choose a service…</option>
+                      {SERVICES.slice(0, 10).map(s => <option key={s.slug} value={s.title}>{s.title}</option>)}
                     </select>
                   </div>
-                  <button type="submit" className="btn-gold w-full">Submit Enquiry <ArrowRight className="h-4 w-4" /></button>
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="btn-gold w-full disabled:opacity-60"
+                  >
+                    {submitting ? "Sending..." : <>Submit Enquiry <ArrowRight className="h-4 w-4" /></>}
+                  </button>
                   <p className="text-center text-[11px] text-muted-foreground">By submitting you agree to be contacted by our team.</p>
                 </div>
               </form>
@@ -175,7 +306,7 @@ const Home = () => {
           <p className="text-center text-xs uppercase tracking-[0.25em] text-muted-foreground">Trusted by 500+ organisations across Pune</p>
           <div className="mt-5 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 opacity-60">
             {CLIENT_LOGOS.slice(0, 8).map(l => (
-              <span key={l} className="font-display text-base font-semibold text-primary/70">{l}</span>
+              <span key={l.slug} className="font-display text-base font-semibold text-primary/70">{l.name}</span>
             ))}
           </div>
         </div>
@@ -195,8 +326,10 @@ const Home = () => {
             </div>
           </Reveal>
           <Reveal delay={120} className="lg:col-span-6">
-            <span className="eyebrow">Welcome to Star Security</span>
-            <h2 className="heading-section mt-4 text-primary">A Pune family business, built on trust.</h2>
+            <span className="eyebrow">Why Star Security</span>
+            <h2 className="heading-section mt-4 text-primary">
+              Two decades of <span className="text-gold">disciplined</span> private security.
+            </h2>
             <p className="mt-5 text-muted-foreground leading-relaxed">
               Founded in 2007 by Late Anil Kamble and now led by MD Sonali Kamble, Star Security & Bouncer has grown into one of Pune's most respected private-security agencies. We protect over 500 sites — from MIDC factories and IT campuses to weddings, hospitals and gated societies — with PSARA-trained, police-verified personnel and real on-ground supervision.
             </p>
@@ -227,7 +360,7 @@ const Home = () => {
                 <Link to={`/services/${s.slug}`} className="card-elevate group block h-full overflow-hidden">
                   <div className="relative aspect-[4/3] overflow-hidden bg-primary">
                     <img
-                      src={SERVICE_IMAGES[s.slug] || corporateSvc}
+                      src={SERVICE_IMAGES[s.slug] || corporateSecurityImg}
                       alt={s.title}
                       className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                       loading="lazy"
