@@ -75,23 +75,26 @@ export const Header = () => {
         scrolled && "shadow-md"
       )}>
         <div className="container-wide flex h-16 items-center justify-between lg:h-20">
-          <Link to="/" className="group flex items-center gap-3" aria-label="Star Security & Bouncer — home">
+          <Link to="/" className="group flex items-center gap-3.5" aria-label="Star Security & Bouncer — home">
             <img
               src={logoUrl}
               alt=""
-              width={56}
-              height={56}
+              width={64}
+              height={64}
               decoding="async"
               fetchPriority="high"
-              className="h-14 w-14 shrink-0 object-contain transition-transform group-hover:scale-105"
+              className="h-16 w-16 shrink-0 object-contain transition-transform group-hover:scale-105"
             />
-            <div className="leading-[0.95]">
-              {/* Hero — STAR */}
-              <div className="font-display text-3xl font-black tracking-tight text-gold sm:text-4xl">
+            {/* Wordmark — vertically centered against the logo height */}
+            <div className="flex flex-col items-center justify-center self-center leading-none">
+              {/* Hero — STAR, golden, balanced against logo */}
+              <div className="font-display text-[28px] font-black tracking-[-0.01em] text-gold sm:text-[34px]">
                 STAR
               </div>
-              {/* Both services equally weighted, mixed-case to match the real brand mark */}
-              <div className="mt-1 font-display text-base font-bold tracking-tight text-primary sm:text-lg">
+              {/* Gold hairline divider — premium brand cue */}
+              <div className="my-1.5 h-px w-full bg-gradient-to-r from-transparent via-gold to-transparent" />
+              {/* Tagline — tight-tracked caps */}
+              <div className="font-display text-[13px] font-bold uppercase tracking-[0.08em] text-primary sm:text-[15px]">
                 Security <span className="text-gold">&amp;</span> Bouncer
               </div>
             </div>
